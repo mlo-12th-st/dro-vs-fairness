@@ -1,0 +1,9 @@
+List of Sources Used
+* Make sure to list document name and URL
+* We will eventually fix this list to include correct APA formatting
+
+---------------------------------------------------------------------
+- UCSD DRO Lecture Notes
+  - https://cseweb.ucsd.edu/classes/sp20/cse291-b/lecture2.pdf
+- Distributionally Robust Optimization: A Review
+  - https://arxiv.org/pdf/1908.05659.pdf
