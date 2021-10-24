@@ -9,3 +9,5 @@ List of Sources Used
   - https://arxiv.org/pdf/1908.05659.pdf
 - Tutorial on Evaluation of Fairness
   - https://towardsdatascience.com/a-tutorial-on-fairness-in-machine-learning-3ff8ba1040cb
+- Distributionally Robust Neural Networks
+  - https://openreview.net/pdf?id=ryxGuJrFvS
