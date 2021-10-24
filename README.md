@@ -6,4 +6,4 @@ Group Members:
 - Will Hawkins ()
 - Cole Mediratta ()
 - Roman Silen (silenr@rpi.edu)
-- Dan Stevens ()
+- Dan Stevens (steved7@rpi.edu)
