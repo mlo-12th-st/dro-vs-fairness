@@ -7,3 +7,6 @@ List of Sources Used
   - https://cseweb.ucsd.edu/classes/sp20/cse291-b/lecture2.pdf
 - Distributionally Robust Optimization: A Review
   - https://arxiv.org/pdf/1908.05659.pdf
+- Tutorial on Evaluation Fairness
+  - https://towardsdatascience.com/a-tutorial-on-fairness-in-machine-learning-3ff8ba1040cb
+
