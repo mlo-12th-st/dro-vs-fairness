@@ -4,6 +4,6 @@ Project for the Machine Learning and Optimization course at RPI exploring the tr
 Group Members:
 - Jared Gridley (gridlj@rpi.edu)
 - Will Hawkins ()
-- Cole Mediratta ()
+- Cole Mediratta (medirc@rpi.edu)
 - Roman Silen (silenr@rpi.edu)
 - Dan Stevens (steved7@rpi.edu)
