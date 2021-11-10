@@ -3,8 +3,6 @@ Looked at image classificaiton problem and uses three metrics to compute fairnes
    Then proposed a way to even out the distribution with GANs, does not change original dataset, but augments it with new images (did something similer with embedding models for text data)  
    Then evaluates accuracy/precision/recall and fairness metrics (some of which have acc/p/r built in)
 
-
-
 (back-burner)
 2) Fairness in Streaming Submodular Maximization: Algorithms and Hardness  
   
