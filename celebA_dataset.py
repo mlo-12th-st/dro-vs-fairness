@@ -57,7 +57,7 @@ class CelebADataset(torch.utils.data.Dataset):
         if self.transform:
             img = self.transform(img)
 
-        return img, self.attr_arr[idx,0], self.attr_arr[idx,1] 
+        return img, self.attr_arr[idx,0], self.attr_arr[idx,1]
 
 
 def get_attr(attr_file, target_attr, spur_attr):
@@ -87,7 +87,8 @@ def get_attr(attr_file, target_attr, spur_attr):
     return attr_arr
 
 
-def load_data(batch_size=4, image_size=128, target_attr='Blond_Hair', spur_attr='Male'):
+def load_data(batch_size=4, image_size=128, train_test_split=0.8,
+              target_attr='Blond_Hair', spur_attr='Male'):
     """
     Load the celebA dataset from ./data/celeba/img_align_celeba
     and return the Pytorch dataset/dataloader
@@ -98,6 +99,9 @@ def load_data(batch_size=4, image_size=128, target_attr='Blond_Hair', spur_attr=
     image_size : int, optional
         spatial size of training images, images are
         resized to this size. The default is 128.
+    train_test_split : float, optional.
+        percentage of data allocated to training.
+        The default is 0.8.
     target_attr : str, optional.  
         target attribute for model to learn.  The
         default is "Blond_Hair"
@@ -107,19 +111,23 @@ def load_data(batch_size=4, image_size=128, target_attr='Blond_Hair', spur_attr=
 
     Returns
     -------
-    celebA_data : torch.utils.data.Dataset
-        pytorch celebA dataset.
-    data_loader : torch.utils.data.DataLoader
-        dataloader for pytorch celebA dataset.
+    train_data : torch.utils.data.Dataset
+        pytorch celebA train dataset (162079 samples).
+    test_data : torch.utils.data.Dataset
+        pytorch celebA test dataset (40520 samples).
+    trainloader : torch.utils.data.DataLoader
+        dataloader for pytorch celebA training dataset.
+    testloader : torch.utils.data.DataLoader
+        dataloader for pytorch celebA test dataset.
 
     """
     
     # Root directory for the dataset
     data_root = './data/celeba'
     # folder for image data
-    img_folder = f'{data_root}/img_align_celeba'
+    img_folder = f'{data_root}/img_align_celeba_subset'
     # file for attribute labels
-    attr_file = f'{data_root}/list_attr_celeba2.txt'
+    attr_file = f'{data_root}/list_attr_celeba_subset.txt'
     
     # Transformations to be applied to each individual image sample
     transform=transforms.Compose([
@@ -136,10 +144,19 @@ def load_data(batch_size=4, image_size=128, target_attr='Blond_Hair', spur_attr=
     # Load the dataset from file and apply transformations
     celebA_data = CelebADataset(img_folder, attr_arr, transform)
     
-    data_loader = torch.utils.data.DataLoader(celebA_data,
+    train_size = int(train_test_split * len(celebA_data))
+    test_size = len(celebA_data) - train_size
+    train_data, test_data = torch.utils.data.random_split(celebA_data, 
+                                                          [train_size, test_size])
+    
+    trainloader = torch.utils.data.DataLoader(train_data,
                                               batch_size=batch_size,
                                               shuffle=True)
     
-    return celebA_data, data_loader
+    testloader = torch.utils.data.DataLoader(test_data,
+                                              batch_size=batch_size,
+                                              shuffle=False)
+    
+    return train_data, test_data, trainloader, testloader
     
     
