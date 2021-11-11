@@ -32,7 +32,7 @@ def main():
     
     # Optimization
     parser.add_argument('-l', '--loss_fn', default='BCEWithLogitsLoss')
-    parser.add_argument('-t', '--train_method', default='SGD')
+    parser.add_argument('-t', '--train_method', default='standard')
     parser.add_argument('-e', '--epochs', type=int, default=5)
     parser.add_argument('-b', '--batch_size', type=int, default=4)
     parser.add_argument('--lr', type=float, default=0.001)     # learning rate
@@ -90,9 +90,14 @@ def main():
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9)
         
     """ Training Loop """
-    train_acc, test_acc,  \
-    group_train_acc, group_test_acc = train.standard_train(model, criterion, optimizer, trainloader, 
-                                                           testloader, args.epochs, dro_flag=True)
+    if args.train_method == 'standard':
+        train_acc, test_acc, \
+        group_train_acc, group_test_acc = train.standard_train(model, criterion, optimizer, trainloader,
+                                                  testloader, args.epochs, dro_flag=True)
+    elif args.train_method == 'dro':
+        train_acc, test_acc, \
+        group_train_acc, group_test_acc = train.dro_train(model, criterion, optimizer, trainloader, 
+                                              testloader, args.epochs, dro_flag=True)
     
     """ Plot Accuracy """
     plots.plot_acc([train_acc, test_acc], labels=['train', 'test'])

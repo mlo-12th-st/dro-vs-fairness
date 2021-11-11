@@ -8,6 +8,51 @@ import numpy as np
 import torch
 from sklearn.metrics import confusion_matrix, classification_report
 
+
+def split_group_data(dataloader):
+    """
+    Split data from dataloader into 4 separate groups
+    based on target and spurious attributes
+        ( attr1,  attr2) - e.g. blond hair, male
+        ( attr1, !attr2) - e.g. blond, female
+        (!attr1,  attr2)
+        (!attr1, !attr2)
+
+    Parameters
+    ----------
+    dataloader : torch.data.utils.DataLoader
+
+    Returns
+    -------
+    group1_data, group2_data
+    group3_data, group4_data : list, torch.Tensor
+        subsets of data from dataloader
+
+    """
+    
+    group1_data = []
+    group2_data = []
+    group3_data = []
+    group4_data = []
+    
+    for i, data in enumerate(dataloader, 0):
+        inputs, t_labels, s_labels = data
+        
+        # iterate through mini-batch
+        for (x,y1,y2) in zip(inputs, t_labels, s_labels):
+            if (y1==1 and y2==1):
+                group1_data.append([x,y1,y2])
+            elif (y1==1 and y2==0):
+                group2_data.append([x,y1,y2])
+            elif (y1==0 and y2==1):
+                group3_data.append([x,y1,y2])
+            else:
+                group4_data.append([x,y1,y2])
+                
+    return group1_data, group2_data, group3_data, group4_data
+    
+
+
 def accuracy(model, dataloader):
     """
     Calculate accuracy of model on data in dataloader
