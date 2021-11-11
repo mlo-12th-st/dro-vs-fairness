@@ -15,7 +15,7 @@ import numpy as np
 import torch
 
 def standard_train(model, criterion, optimizer, trainloader,
-                   testloader, num_epochs, dro_flag=False):
+                   testloader, num_epochs, device, dro_flag=False):
     
     """
     Train model using ERM
@@ -55,8 +55,8 @@ def standard_train(model, criterion, optimizer, trainloader,
     for epoch in range(num_epochs):
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
-            # get the inputs; data is a list of [inputs, labels]
-            inputs, labels, _ = data
+            # get the inputs; data is a list of [inputs, labels, spur_label]
+            inputs, labels = data[0].to(device), data[1].to(device)
     
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -74,17 +74,17 @@ def standard_train(model, criterion, optimizer, trainloader,
                       (epoch + 1, num_epochs, i + 1, len(trainloader), running_loss / 100))
                 running_loss = 0.0
         
-        train_acc.append(utils.accuracy(model, trainloader))
-        test_acc.append(utils.accuracy(model, testloader))
+        train_acc.append(utils.accuracy(model, trainloader, device))
+        test_acc.append(utils.accuracy(model, testloader, device))
         
         if (dro_flag):
-            group1_acc, group2_acc, group3_acc, group4_acc = utils.group_accuracy(model, trainloader)
+            group1_acc, group2_acc, group3_acc, group4_acc = utils.group_accuracy(model, trainloader, device)
             group_train_acc[0].append(group1_acc)
             group_train_acc[1].append(group2_acc)
             group_train_acc[2].append(group3_acc)
             group_train_acc[3].append(group4_acc)
             
-            group1_acc, group2_acc, group3_acc, group4_acc = utils.group_accuracy(model, testloader)
+            group1_acc, group2_acc, group3_acc, group4_acc = utils.group_accuracy(model, testloader, device)
             group_test_acc[0].append(group1_acc)
             group_test_acc[1].append(group2_acc)
             group_test_acc[2].append(group3_acc)
@@ -101,7 +101,7 @@ def standard_train(model, criterion, optimizer, trainloader,
 
 
 def dro_train(model, criterion, optimizer, trainloader,
-                   testloader, num_epochs, dro_flag=True):
+                   testloader, num_epochs, device, dro_flag=True):
     
     """
     Train model using DRO
@@ -156,7 +156,7 @@ def dro_train(model, criterion, optimizer, trainloader,
             np.random.shuffle(group_data[i])
             for j, data in enumerate(group_data[i], 0):
                 # data = [inputs, target_labels, spur_labels]
-                inputs, labels, _ = data
+                inputs, labels = data[0].to(device), data[1].to(device)
                 
                 # zero the parameter gradients
                 optimizer.zero_grad()
@@ -192,17 +192,17 @@ def dro_train(model, criterion, optimizer, trainloader,
                     running_loss = 0.0
                 
         
-        train_acc.append(utils.accuracy(model, trainloader))
-        test_acc.append(utils.accuracy(model, testloader))
+        train_acc.append(utils.accuracy(model, trainloader, device))
+        test_acc.append(utils.accuracy(model, testloader, device))
         
         if (dro_flag):
-            group1_acc, group2_acc, group3_acc, group4_acc = utils.group_accuracy(model, trainloader)
+            group1_acc, group2_acc, group3_acc, group4_acc = utils.group_accuracy(model, trainloader, device)
             group_train_acc[0].append(group1_acc)
             group_train_acc[1].append(group2_acc)
             group_train_acc[2].append(group3_acc)
             group_train_acc[3].append(group4_acc)
             
-            group1_acc, group2_acc, group3_acc, group4_acc = utils.group_accuracy(model, testloader)
+            group1_acc, group2_acc, group3_acc, group4_acc = utils.group_accuracy(model, testloader, device)
             group_test_acc[0].append(group1_acc)
             group_test_acc[1].append(group2_acc)
             group_test_acc[2].append(group3_acc)

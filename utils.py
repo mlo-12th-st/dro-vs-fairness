@@ -53,7 +53,7 @@ def split_group_data(dataloader):
     
 
 
-def accuracy(model, dataloader):
+def accuracy(model, dataloader, device):
     """
     Calculate accuracy of model on data in dataloader
 
@@ -75,7 +75,7 @@ def accuracy(model, dataloader):
     with torch.no_grad():
         for i, data in enumerate(dataloader, 0):
             X_batch, y, spur_labels = data
-            y_hat = model(X_batch)
+            y_hat = model(X_batch.to(device))
             y_hat = torch.sigmoid(y_hat)
             y_hat = torch.round(y_hat)
             y_pred.append(y_hat.cpu().numpy())
@@ -88,7 +88,7 @@ def accuracy(model, dataloader):
     return acc
     
 
-def group_accuracy(model, dataloader):
+def group_accuracy(model, dataloader, device):
     """
     Calculate accuracy of model on each group
     in dataset:
@@ -152,7 +152,7 @@ def group_accuracy(model, dataloader):
     return group1_acc, group2_acc, group3_acc, group4_acc
 
 
-def worst_group_acc(model, dataloader):
+def worst_group_acc(model, dataloader, device):
     """
     Return the Worst-Group accuracy of the model 
     on the data
@@ -168,12 +168,12 @@ def worst_group_acc(model, dataloader):
 
     """
     
-    a, b, c, d = group_accuracy(model, dataloader)
+    a, b, c, d = group_accuracy(model, dataloader, device)
     worst_group_acc = np.min([a,b,c,d])
     return worst_group_acc
 
 
-def print_metrics(model, trainloader, testloader):
+def print_metrics(model, trainloader, testloader, device):
     """
     Print performance metrics of model on training and test data
         Calculate train/test accuracy
@@ -199,7 +199,7 @@ def print_metrics(model, trainloader, testloader):
     with torch.no_grad():
         for i, data in enumerate(trainloader, 0):
             X_batch, y, spur_labels = data
-            y_test_pred = model(X_batch)
+            y_test_pred = model(X_batch.to(device))
             y_test_pred = torch.sigmoid(y_test_pred)
             y_pred_tag = torch.round(y_test_pred)
             y_pred_train.append(y_pred_tag.cpu().numpy())
@@ -214,7 +214,7 @@ def print_metrics(model, trainloader, testloader):
     with torch.no_grad():
         for i, data in enumerate(testloader, 0):
             X_batch, y, spur_labels = data
-            y_test_pred = model(X_batch)
+            y_test_pred = model(X_batch.to(device))
             y_test_pred = torch.sigmoid(y_test_pred)
             y_pred_tag = torch.round(y_test_pred)
             y_pred_test.append(y_pred_tag.cpu().numpy())
@@ -226,8 +226,8 @@ def print_metrics(model, trainloader, testloader):
     print('Train accuracy: %.3f' % (1-np.sum(np.abs(y_train-y_pred_train))/len(y_train)))
     print(' Test accuracy: %.3f' % (1-np.sum(np.abs(y_test-y_pred_test))/len(y_test)))
     
-    print('Training Data Worst-Group Accuracy: %.3f' % (worst_group_acc(model, trainloader)))
-    print('Test Data Worst-Group Accuracy: %.3f' % (worst_group_acc(model, testloader)))
+    print('Training Data Worst-Group Accuracy: %.3f' % (worst_group_acc(model, trainloader, device)))
+    print('Test Data Worst-Group Accuracy: %.3f' % (worst_group_acc(model, testloader, device)))
     
     print(confusion_matrix(y_test, y_pred_test))
     

@@ -36,6 +36,7 @@ def main():
     parser.add_argument('-e', '--epochs', type=int, default=5)
     parser.add_argument('-b', '--batch_size', type=int, default=4)
     parser.add_argument('--lr', type=float, default=0.001)     # learning rate
+    parser.add_argument('--l2_reg', type=float, default=1e-4)  # l2-penalty
     parser.add_argument('--weight_decay', type=float, default=5e-5)
     
     # Data
@@ -53,6 +54,11 @@ def main():
     print('epochs: ' + str(args.epochs))
     print('batch size: ' + str(args.batch_size))
     
+    """ Option for GPU computing """
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if device.type == 'cuda':
+        torch.cuda.empty_cache()
+    print('device: ' + str(device))
     
     """ Load dataset and dataloader """
     if args.dataset == 'celebA':
@@ -74,11 +80,13 @@ def main():
     
     
     """ Model Selection """
-    if args.model == 'ResNet50':
-        #hello
-        print('ResNet50')
+    if args.model == 'resnet50':
+        model = models.ResNet50()
+    elif args.model == 'resnet18':
+        model = models.ResNet18()
     else:
         model = models.CNN(dim=args.image_size)
+    model.to(device)
         
     """ Loss Function """
     if args.loss_fn == 'hinge':
@@ -87,17 +95,17 @@ def main():
         criterion = torch.nn.BCEWithLogitsLoss()
         
     """ Optimizer """
-    optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9)
+    optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9, weight_decay=args.l2_reg)
         
     """ Training Loop """
     if args.train_method == 'standard':
         train_acc, test_acc, \
         group_train_acc, group_test_acc = train.standard_train(model, criterion, optimizer, trainloader,
-                                                  testloader, args.epochs, dro_flag=True)
+                                                  testloader, args.epochs, device, dro_flag=True)
     elif args.train_method == 'dro':
         train_acc, test_acc, \
         group_train_acc, group_test_acc = train.dro_train(model, criterion, optimizer, trainloader, 
-                                              testloader, args.epochs, dro_flag=True)
+                                              testloader, args.epochs, device, dro_flag=True)
     
     """ Plot Accuracy """
     plots.plot_acc([train_acc, test_acc], labels=['train', 'test'])
@@ -107,7 +115,7 @@ def main():
     plots.plot_group_acc(group_train_acc, group_test_acc, labels=group_labels)
     
     """ Test Performance """
-    utils.print_metrics(model, trainloader, testloader)
+    utils.print_metrics(model, trainloader, testloader, device)
     
 if __name__ == '__main__':
     main()
