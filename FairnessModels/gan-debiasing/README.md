@@ -1,4 +1,4 @@
-(Code from this repository with new changes, git didn't want merge my fork so, just cut out the fork: https://github. com/princetonvisualai/gan-debiasing)
+(Code from this repository with evaluation metric changes: https://github. com/princetonvisualai/gan-debiasing)
 # Fair Attribute Classification through Latent Space De-biasing
 
 ### [Project Page](https://princetonvisualai.github.io/gan-debiasing/) | [Paper](https://arxiv.org/abs/2012.01469) | [Colab Notebook](https://colab.research.google.com/github/https-deeplearning-ai/GANs-Public/blob/master/C2W2_GAN_Debiasing_(Optional).ipynb) | [2min Talk](https://youtu.be/j5LwfJQNJYU) | [5min Talk](https://youtu.be/KIJ61YF05Js) | [10min Talk](https://youtu.be/1ebHTCQRNs4)
