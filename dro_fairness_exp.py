@@ -14,6 +14,7 @@ import models
 import loss
 import train
 import utils
+import plots
 
 import argparse
 import torch
@@ -32,7 +33,7 @@ def main():
     # Optimization
     parser.add_argument('-l', '--loss_fn', default='BCEWithLogitsLoss')
     parser.add_argument('-t', '--train_method', default='SGD')
-    parser.add_argument('-e', '--epochs', type=int, default=2)
+    parser.add_argument('-e', '--epochs', type=int, default=5)
     parser.add_argument('-b', '--batch_size', type=int, default=4)
     parser.add_argument('--lr', type=float, default=0.001)     # learning rate
     parser.add_argument('--weight_decay', type=float, default=5e-5)
@@ -87,7 +88,10 @@ def main():
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9)
         
     """ Training Loop """
-    train.standard_train(model, criterion, optimizer, trainloader, args.epochs)
+    train_acc, test_acc = train.standard_train(model, criterion, optimizer, trainloader, testloader, args.epochs)
+    
+    """ Plot Accuracy """
+    plots.plot_acc([train_acc, test_acc], labels=['train', 'test'])
     
     """ Test Performance """
     utils.print_metrics(model, trainloader, testloader)

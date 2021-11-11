@@ -8,6 +8,41 @@ import numpy as np
 import torch
 from sklearn.metrics import confusion_matrix, classification_report
 
+def accuracy(model, dataloader):
+    """
+    Calculate accuracy of model on data in dataloader
+
+    Parameters
+    ----------
+    model : torch.nn.Module
+    dataloader : torch.data.utils.DataLoader
+        
+    Returns
+    -------
+    acc : float
+        Model accuracy
+
+    """
+    
+    y_real = []
+    y_pred = []
+    model.eval()
+    with torch.no_grad():
+        for i, data in enumerate(dataloader, 0):
+            X_batch, y, spur_labels = data
+            y_hat = model(X_batch)
+            y_hat = torch.sigmoid(y_hat)
+            y_hat = torch.round(y_hat)
+            y_pred.append(y_hat.cpu().numpy())
+            y_real.append(y.cpu().numpy())
+    
+    y_real = np.array([a.squeeze() for a in y_real]).flatten()
+    y_pred = np.array([a.squeeze() for a in y_pred]).flatten()
+
+    acc = 1-np.sum(y_real-y_pred)/len(y_real)
+    return acc
+    
+
 def print_metrics(model, trainloader, testloader):
     """
     Print performance metrics of model on training and test data
@@ -42,6 +77,7 @@ def print_metrics(model, trainloader, testloader):
     y_train = np.array([a.squeeze() for a in y_train]).flatten()
     y_pred_train = np.array([a.squeeze() for a in y_pred_train]).flatten()
     
+    # calculate test
     y_test = []
     y_pred_test = []
     with torch.no_grad():
