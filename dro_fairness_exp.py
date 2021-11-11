@@ -40,6 +40,7 @@ def main():
     
     # Data
     parser.add_argument('-d', '--dataset', default='celebA')
+    parser.add_argument('--train_test_split', type=float, default=0.8)
     parser.add_argument('--image_size', type=int, default=128)
     parser.add_argument('--target_attr', default='Blond_Hair')
     parser.add_argument('--spur_attr', default='Male')
@@ -57,6 +58,7 @@ def main():
     if args.dataset == 'celebA':
         train_data, test_data, trainloader, testloader = celebA_dataset.load_data(batch_size=args.batch_size,
                                                        image_size=args.image_size,
+                                                       train_test_split=args.train_test_split,
                                                        target_attr=args.target_attr,
                                                        spur_attr=args.spur_attr)
     
@@ -88,10 +90,16 @@ def main():
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9)
         
     """ Training Loop """
-    train_acc, test_acc = train.standard_train(model, criterion, optimizer, trainloader, testloader, args.epochs)
+    train_acc, test_acc,  \
+    group_train_acc, group_test_acc = train.standard_train(model, criterion, optimizer, trainloader, 
+                                                           testloader, args.epochs, dro_flag=True)
     
     """ Plot Accuracy """
     plots.plot_acc([train_acc, test_acc], labels=['train', 'test'])
+    
+    """ Plot Group Accuracy """
+    group_labels = ['Blond, male', 'Blond, female', 'Not blond, male', 'Not blond, female']
+    plots.plot_group_acc(group_train_acc, group_test_acc, labels=group_labels)
     
     """ Test Performance """
     utils.print_metrics(model, trainloader, testloader)
