@@ -155,6 +155,7 @@ def dro_train(model, criterion, optimizer, trainloader,
         for i in group_order:
             np.random.shuffle(group_data[i])
             for j, data in enumerate(group_data[i], 0):
+                model.train()
                 # data = [inputs, target_labels, spur_labels]
                 inputs, labels = data[0].to(device), data[1].to(device)
                 
@@ -162,6 +163,7 @@ def dro_train(model, criterion, optimizer, trainloader,
                 optimizer.zero_grad()
                 
                 # forward propagation
+                model.eval()
                 outputs = model(torch.unsqueeze(inputs,0))
                 loss = criterion(outputs, labels.float().unsqueeze(0).unsqueeze(0))
                 

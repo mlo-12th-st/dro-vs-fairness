@@ -117,7 +117,7 @@ def group_accuracy(model, dataloader, device):
     with torch.no_grad():
         for i, data in enumerate(dataloader, 0):
             X_batch, y, y2 = data
-            y_hat = model(X_batch)
+            y_hat = model(X_batch.to(device))
             y_hat = torch.sigmoid(y_hat)
             y_hat = torch.round(y_hat)
             y_pred.append(y_hat.cpu().numpy())
