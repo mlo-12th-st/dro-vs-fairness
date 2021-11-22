@@ -29,6 +29,7 @@ def main():
     
     # Model
     parser.add_argument('-m', '--model', default='resnet50')
+    parser.add_argument('--model_save_file', default='model')
     
     # Optimization
     parser.add_argument('-l', '--loss_fn', default='BCEWithLogitsLoss')
@@ -84,8 +85,13 @@ def main():
         model = models.ResNet50()
     elif args.model == 'resnet18':
         model = models.ResNet18()
-    else:
+    elif args.model == 'cnn':
         model = models.CNN(dim=args.image_size)
+    else:
+        # load model from file
+        model_path = './models/' + args.model
+        checkpoint = torch.load(model_path)
+        model = torch.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
         
     """ Loss Function """
@@ -116,6 +122,22 @@ def main():
     
     """ Test Performance """
     utils.print_metrics(model, trainloader, testloader, device)
+    
+    
+    """ Save Model """
+    if args.model_save_file == 'model':
+        model_path = './models/' + args.model + '.pth'
+    else:
+        model_path = './models/' + args.model_save_file
+    torch.save({
+            'epoch': args.epochs,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'train_acc': train_acc,
+            'test_acc': test_acc,
+            'group_train_acc': group_train_acc,
+            'group_test_acc': group_test_acc
+        }, model_path)
     
 if __name__ == '__main__':
     main()
