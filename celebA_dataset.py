@@ -21,7 +21,6 @@ import os
 import torch
 import torchvision
 from torchvision import transforms
-from natsort import natsorted
 from PIL import Image
 
 ## Create a custom Dataset class

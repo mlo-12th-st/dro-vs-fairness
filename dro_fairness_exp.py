@@ -33,7 +33,7 @@ def main():
     
     # Optimization
     parser.add_argument('-l', '--loss_fn', default='BCEWithLogitsLoss')
-    parser.add_argument('-t', '--train_method', default='standard')
+    parser.add_argument('-t', '--train_method', default='ERM')
     parser.add_argument('-e', '--epochs', type=int, default=5)
     parser.add_argument('-b', '--batch_size', type=int, default=4)
     parser.add_argument('--lr', type=float, default=0.001)     # learning rate
@@ -44,8 +44,8 @@ def main():
     parser.add_argument('-d', '--dataset', default='celebA')
     parser.add_argument('--train_test_split', type=float, default=0.8)
     parser.add_argument('--image_size', type=int, default=128)
-    parser.add_argument('--target_attr', default='Blond_Hair')
-    parser.add_argument('--spur_attr', default='Male')
+    parser.add_argument('--target_attr', default='Blond_Hair')  # Target attribute
+    parser.add_argument('--spur_attr', default='Male')          # Spurious attribute
     
     # Files
     parser.add_argument('--model_save_file', default='model')
@@ -87,11 +87,11 @@ def main():
     
     
     """ Model Selection """
-    if args.model == 'resnet50':
+    if args.model.lower() == 'resnet50':
         model = models.ResNet50()
-    elif args.model == 'resnet18':
+    elif args.model.lower() == 'resnet18':
         model = models.ResNet18()
-    elif args.model == 'cnn':
+    elif args.model.lower() == 'cnn':
         model = models.CNN(dim=args.image_size)
     else:
         # load model from file
@@ -110,11 +110,11 @@ def main():
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9, weight_decay=args.l2_reg)
         
     """ Training Loop """
-    if args.train_method == 'standard':
+    if args.train_method.lower() == 'erm':
         train_acc, test_acc, \
         group_train_acc, group_test_acc = train.standard_train(model, criterion, optimizer, trainloader,
                                                   testloader, args.epochs, device, dro_flag=True)
-    elif args.train_method == 'dro':
+    elif args.train_method.lower() == 'dro':
         train_acc, test_acc, \
         group_train_acc, group_test_acc = train.dro_train(model, criterion, optimizer, trainloader, 
                                               testloader, args.epochs, device, dro_flag=True)
