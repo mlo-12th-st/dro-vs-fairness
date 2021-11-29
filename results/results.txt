@@ -1,15 +1,15 @@
-Train accuracy: 0.963
- Test accuracy: 0.922
-Training Data Worst-Group Accuracy: 0.476
-Test Data Worst-Group Accuracy: 0.100
-[[2065   70]
- [ 125  240]]
+Train accuracy: 0.858
+ Test accuracy: 0.850
+Training Data Worst-Group Accuracy: 0.000
+Test Data Worst-Group Accuracy: 0.000
+[[2126    0]
+ [ 374    0]]
               precision    recall  f1-score   support
 
-           0       0.94      0.97      0.95      2135
-           1       0.77      0.66      0.71       365
+           0       0.85      1.00      0.92      2126
+           1       0.00      0.00      0.00       374
 
-    accuracy                           0.92      2500
-   macro avg       0.86      0.81      0.83      2500
-weighted avg       0.92      0.92      0.92      2500
+    accuracy                           0.85      2500
+   macro avg       0.43      0.50      0.46      2500
+weighted avg       0.72      0.85      0.78      2500
 
