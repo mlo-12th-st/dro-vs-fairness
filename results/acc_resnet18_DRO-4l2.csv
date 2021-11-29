@@ -1,0 +1,2 @@
+Epochs,Overall- train,Overall- test,"Blond, male- train","Blond, female- train","Not blond, male- train","Not blond, female- train","Blond, male- test","Blond, female- test","Not blond, male- test","Not blond, female- test"
+1.0,0.14800000000000002,0.138,1.0,1.0,0.0,0.0,1.0,1.0,0.0,0.0

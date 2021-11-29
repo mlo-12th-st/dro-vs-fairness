@@ -75,7 +75,7 @@ def accuracy(model, dataloader, device):
     model.eval()
     with torch.no_grad():
         for i, data in enumerate(dataloader, 0):
-            X_batch, y, spur_labels = data
+            X_batch, y, _ = data
             y_hat = model(X_batch.to(device))
             y_hat = torch.sigmoid(y_hat)
             y_hat = torch.round(y_hat)
@@ -124,31 +124,40 @@ def group_accuracy(model, dataloader, device):
             y_pred.append(y_hat.cpu().numpy())
             y_real.append(y.cpu().numpy())
             y2_real.append(y2.cpu().numpy())
+
     
     y_real = np.array([a.squeeze() for a in y_real]).flatten()
     y_pred = np.array([a.squeeze() for a in y_pred]).flatten()
     y2_real = np.array([a.squeeze() for a in y2_real]).flatten()
     
     # in each list, store 1 if correct prediction, 0 if incorrect
-    group1_pred = []
-    group2_pred = []
-    group3_pred = []
-    group4_pred = []
+    group1_correct = 0
+    group1_total = 0
+    group2_correct = 0
+    group2_total = 0
+    group3_correct = 0
+    group3_total = 0
+    group4_correct = 0
+    group4_total = 0
     
     for i in range(len(y_real)):
         if (y_real[i] == 1 and y2_real[i] == 1):
-            group1_pred.append(1-np.abs(y_real[i]-y_pred[i]))
+            group1_correct += 1-np.abs(y_real[i]-y_pred[i])
+            group1_total += 1
         elif (y_real[i] == 1 and y2_real[i] == 0):
-            group2_pred.append(1-np.abs(y_real[i]-y_pred[i]))
+            group2_correct += 1-np.abs(y_real[i]-y_pred[i])
+            group2_total += 1
         elif (y_real[i] == 0 and y2_real[i] == 1):
-            group3_pred.append(1-np.abs(y_real[i]-y_pred[i]))
+            group3_correct += 1-np.abs(y_real[i]-y_pred[i])
+            group3_total += 1
         else:
-            group4_pred.append(1-np.abs(y_real[i]-y_pred[i]))
-
-    group1_acc = np.sum(group1_pred)/len(group1_pred)
-    group2_acc = np.sum(group2_pred)/len(group2_pred)
-    group3_acc = np.sum(group3_pred)/len(group3_pred)
-    group4_acc = np.sum(group4_pred)/len(group4_pred)
+            group4_correct += 1-np.abs(y_real[i]-y_pred[i])
+            group4_total += 1
+    
+    group1_acc = group1_correct/group1_total
+    group2_acc = group2_correct/group2_total
+    group3_acc = group3_correct/group3_total
+    group4_acc = group4_correct/group4_total
 
     return group1_acc, group2_acc, group3_acc, group4_acc
 
