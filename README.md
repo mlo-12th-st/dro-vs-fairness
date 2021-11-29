@@ -12,7 +12,7 @@ To use a subset of the dataset, download the first 5000 images from `img_align_c
 ## Code
 
 ### Prerequisites
-The following python packages are used in the code: NumPy, Pandas, Matplotlib, PyTorch, Torchvision
+The following python packages are used in the code: NumPy, Pandas, Matplotlib, PyTorch, Torchvision, Pillow (PIL)
 
 ### Sample commands
 
