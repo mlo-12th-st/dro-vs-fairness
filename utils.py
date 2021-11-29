@@ -5,6 +5,7 @@ Helper functions
 """
 
 import numpy as np
+import pandas as pd
 import torch
 from sklearn.metrics import confusion_matrix, classification_report
 
@@ -232,3 +233,42 @@ def print_metrics(model, trainloader, testloader, device):
     print(confusion_matrix(y_test, y_pred_test))
     
     print(classification_report(y_test, y_pred_test))
+    
+    
+def save_acc(train_acc, test_acc, group_train_acc, group_test_acc, outfile, labels=None):
+    """
+    Save accuracy arrays to csv file
+
+    Parameters
+    ----------
+    train_acc : np.ndarray
+    test_acc : np.ndarray
+        both hold accuracy with each epoch
+    group_train_acc : list, np.ndarray
+    group_test_acc : list, np.ndarray
+        list of numpy arrays that hold
+        accuracy on each group of data
+        (e.g. blond hair, male)
+    outfile : str
+        name of output file
+    labels : str, optional
+        list of labels for subgroups on plot. The default is None.
+
+    Returns
+    -------
+    None.
+
+    """
+    
+    epochs = [i+1 for i in range(len(group_train_acc[0]))]
+    if labels==None:
+        labels=['y1=1, y2=1', 'y1=1, y2=0', 'y1=0, y2=1', 'y1=0, y2=0']
+        
+    col_names = ['Epochs', 'Overall- train', 'Overall- test', labels[0] + '- train', labels[1] + '- train', 
+                 labels[2] + '- train', labels[3] + '- train', labels[0] + '- test', labels[1] + '- test',
+                 labels[2] + '- test', labels[3] + '- test']
+    df = pd.DataFrame(np.array([epochs, train_acc, test_acc, group_train_acc[0], group_train_acc[1], group_train_acc[2],
+                       group_train_acc[3], group_test_acc[0], group_test_acc[1], group_test_acc[2],
+                       group_test_acc[3]]).T, columns=col_names)
+    
+    df.to_csv('./results/'+outfile, index=False)

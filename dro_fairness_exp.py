@@ -16,6 +16,7 @@ import train
 import utils
 import plots
 
+import sys
 import argparse
 import torch
 import matplotlib.pyplot as plt
@@ -29,7 +30,6 @@ def main():
     
     # Model
     parser.add_argument('-m', '--model', default='resnet50')
-    parser.add_argument('--model_save_file', default='model')
     
     # Optimization
     parser.add_argument('-l', '--loss_fn', default='BCEWithLogitsLoss')
@@ -46,6 +46,12 @@ def main():
     parser.add_argument('--image_size', type=int, default=128)
     parser.add_argument('--target_attr', default='Blond_Hair')
     parser.add_argument('--spur_attr', default='Male')
+    
+    # Files
+    parser.add_argument('--model_save_file', default='model')
+    parser.add_argument('--results_file', default='results.txt')
+    parser.add_argument('--accuracy_csv', default='acc.csv')
+    
     args = parser.parse_args()
     
     
@@ -113,15 +119,22 @@ def main():
         group_train_acc, group_test_acc = train.dro_train(model, criterion, optimizer, trainloader, 
                                               testloader, args.epochs, device, dro_flag=True)
     
+    """ Save accuracy vs. epochs to csv """
+    group_labels = ['Blond, male', 'Blond, female', 'Not blond, male', 'Not blond, female']
+    utils.save_acc(train_acc, test_acc, group_train_acc, group_test_acc, args.accuracy_csv,
+                   labels=group_labels)
+    
     """ Plot Accuracy """
     plots.plot_acc([train_acc, test_acc], labels=['train', 'test'])
     
     """ Plot Group Accuracy """
-    group_labels = ['Blond, male', 'Blond, female', 'Not blond, male', 'Not blond, female']
     plots.plot_group_acc(group_train_acc, group_test_acc, labels=group_labels)
     
     """ Test Performance """
+    stdout = sys.stdout
+    sys.stdout = open('./results/'+args.results_file, 'w')
     utils.print_metrics(model, trainloader, testloader, device)
+    sys.stdout = stdout
     
     
     """ Save Model """

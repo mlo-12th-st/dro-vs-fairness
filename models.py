@@ -49,7 +49,7 @@ def ResNet50():
     return model
 
 def ResNet18():
-    model = models.resnet50(pretrained=True)
+    model = models.resnet18(pretrained=True)
     num_ftrs = model.fc.in_features
     model.fc = nn.Linear(num_ftrs, 1)
     
