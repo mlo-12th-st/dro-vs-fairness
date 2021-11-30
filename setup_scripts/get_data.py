@@ -1,56 +1,55 @@
-# Created by Jared Gridley
-# on 11/28/2021
-#
-# get_data.py
-#
+'''
+Code gets Zip of celebA dataset, then unzips the data
 
+To get celebA dataset run: python3 get_zip.py 1nNGRZOl9X4ryeCkEKMBbxNKeCHOp4ShU img_align_celeba.zip
+'''
+
+import sys
 import requests
+from zipfile import ZipFile
 
+def download_file_from_google_drive(id, destination):
+    def get_confirm_token(response):
+        for key, value in response.cookies.items():
+            if key.startswith('download_warning'):
+                return value
 
-def download_file_from_google_drive(file_id, dest):
+        return None
+
+    def save_response_content(response, destination):
+        CHUNK_SIZE = 32768
+
+        with open(destination, "wb") as f:
+            for chunk in response.iter_content(CHUNK_SIZE):
+                if chunk: # filter out keep-alive new chunks
+                    f.write(chunk)
+
     URL = "https://docs.google.com/uc?export=download"
 
     session = requests.Session()
 
-    response = session.get(URL, params={'id': file_id}, stream=True)
-    t = get_confirm_token(response)
+    response = session.get(URL, params = { 'id' : id }, stream = True)
+    token = get_confirm_token(response)
 
-    if t:
-        params = {'id': file_id, 'confirm': t}
-        response = session.get(URL, params=params, stream=True)
+    if token:
+        params = { 'id' : id, 'confirm' : token }
+        response = session.get(URL, params = params, stream = True)
 
-    save_response_content(response, dest)
-
-
-def get_confirm_token(response):
-    for key, value in response.cookies.items():
-        if key.startswith('download_warning'):
-            return value
-
-    return None
+    save_response_content(response, destination)    
 
 
-def save_response_content(response, destination):
-    CHUNK_SIZE = 32768
+if __name__ == "__main__":
+    
+    if(len(sys.argv) != 3):
+        print('Invalid Arguments!')
+    else:
+        # TAKE ID FROM SHAREABLE LINK
+        file_id = sys.argv[1] #'1nNGRZOl9X4ryeCkEKMBbxNKeCHOp4ShU' 
+        # DESTINATION FILE ON YOUR DISK
+        destination = sys.argv[2] #'img_align_celeba.zip'
+        download_file_from_google_drive(file_id, destination)
 
-    with open(destination, "w") as f:
-        for chunk in response.iter_content(CHUNK_SIZE):
-            if chunk:  # filter out keep-alive new chunks
-                f.write(chunk)
-
-
-# Sources and destinations:
-files = []
-#https://drive.google.com/drive/folders/0B7EVK8r0v71pTUZsaXdaSnZBZzg?resourcekey=0-rJlzl934LzC-Xp28GeIBzQ
-#file_id = '0B7EVK8r0v71pTUZsaXdaSnZBZzg'
-#destination = 'image_align_celeba.zip'
-#download_file_from_google_drive(file_id, destination)
-
-
- # Attempt no. 2
-
-from google_drive_downloader import GoogleDriveDownloader as gdd
-
-gdd.download_file_from_google_drive(file_id='0B7EVK8r0v71pTUZsaXdaSnZBZzg', dest_path='/image_align_celeba.zip', unzip=False)
-
-
+        with ZipFile(sys.argv[2], 'r') as zipObj:
+            # Extract all the contents of zip file in current directory
+            zipObj.extractall()
+            
