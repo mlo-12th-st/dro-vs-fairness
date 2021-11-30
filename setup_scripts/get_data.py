@@ -1,7 +1,7 @@
 '''
 Code gets Zip of celebA dataset, then unzips the data
 
-To get celebA dataset run: python3 get_zip.py 1nNGRZOl9X4ryeCkEKMBbxNKeCHOp4ShU img_align_celeba.zip
+To get celebA dataset run: python3 get_data.py 1nNGRZOl9X4ryeCkEKMBbxNKeCHOp4ShU img_align_celeba.zip
 '''
 
 import sys
