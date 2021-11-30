@@ -14,7 +14,7 @@ To use a subset of the dataset, download the first 5000 images from `img_align_c
 ### Prerequisites
 The following python packages are used in the code: NumPy, Pandas, Matplotlib, PyTorch, Torchvision, Pillow (PIL)
 
-### Sample commands
+### Running the Experiments
 
 The two parameters we are most concerned with are the training method and L2-penalty.  These can be changed using the `-t` and `--l2_reg` flags, respectively.  Below are some examples of command line arguments to use.
 
@@ -33,3 +33,8 @@ The data for accuracy during training is stored in a `.csv` file in the `/result
 - `python acc_plots.py -f [FILE]`
 
 where `[FILE]` is just the file name alone (e.g. `acc_resnet50_ERM-4l2.csv`).
+
+### Evaluating Model Performance
+
+To obtain the performance metrics of a model saved in the `/models/` directory, use the script `/helper_scripts/performance.py`.  Specify the model file and model architecture as command line arguments, for example:
+- `python performance.py -m model_resnet18_DRO-4l2.pth -a resnet18`
