@@ -7,5 +7,8 @@ TODO:
     * Check EACH file is downloaded (get each file hash and dest folder)
     * Note: if the original doesn't work, we can download from my drive.
     * Check for file splitting, Algo won't work with file splitting.
+   
+
+   * Download Data File as zip, unzip
     
 2. Update requirements.txt file
