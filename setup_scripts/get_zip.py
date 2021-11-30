@@ -47,6 +47,8 @@ if __name__ == "__main__":
 
 # Text file: https://drive.google.com/file/d/1KDVIqhNIukGE3pA3nC8AZ3LFBGB2HnEl/view
 
+# Temp zip: https://drive.google.com/file/d/1e7QbvV5am6N8m6g9fKzY2uPyI7iUcml6/view
+
 # zip of data: https://drive.google.com/file/d/0B7EVK8r0v71pZjFTYXZWM3FlRnM/view?resourcekey=0-dYn9z10tMJOBAkviAcfdyQ
 
 
