@@ -87,7 +87,8 @@ def get_attr(attr_file, target_attr, spur_attr):
 
 
 def load_data(batch_size=4, image_size=128, train_test_split=0.8,
-              target_attr='Blond_Hair', spur_attr='Male'):
+              target_attr='Blond_Hair', spur_attr='Male',
+              dataset='celeba_subset'):
     """
     Load the celebA dataset from ./data/celeba/img_align_celeba
     and return the Pytorch dataset/dataloader
@@ -107,6 +108,9 @@ def load_data(batch_size=4, image_size=128, train_test_split=0.8,
     spur_attr : str, optional.
         spurious attribute to test for dist. 
         robustness.  The default is "Male"
+    dataset : str, optional.
+        name of dataset folder to use.  The
+        default is celeba_subset.
 
     Returns
     -------
@@ -124,9 +128,9 @@ def load_data(batch_size=4, image_size=128, train_test_split=0.8,
     # Root directory for the dataset
     data_root = './data/celeba'
     # folder for image data
-    img_folder = f'{data_root}/img_align_celeba_subset'
+    img_folder = f'{data_root}/img_align_'+dataset
     # file for attribute labels
-    attr_file = f'{data_root}/list_attr_celeba_subset.txt'
+    attr_file = f'{data_root}/list_attr_'+dataset+'.txt'
     
     # Transformations to be applied to each individual image sample
     transform=transforms.Compose([
