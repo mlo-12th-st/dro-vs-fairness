@@ -28,8 +28,8 @@ For full list of command line arguments, see the `main()` function of `dro_fairn
 
 ### Generating Plots
 
-The data for accuracy during training is stored in a `.csv` file in the `/results/` directory.  To generate plots from this file, run the script `/helper_scripts/acc_plots` as follows:
+The data for accuracy during training is stored in a `.csv` file in the `/results/` directory.  To generate plots from this file, run the script `/helper_scripts/acc_plots.py` as follows:
 
-- `python acc_plots -f [FILE]`
+- `python acc_plots.py -f [FILE]`
 
 where `[FILE]` is just the file name alone (e.g. `acc_resnet50_ERM-4l2.csv`).
