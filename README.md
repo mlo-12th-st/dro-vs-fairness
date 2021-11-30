@@ -16,10 +16,20 @@ The following python packages are used in the code: NumPy, Pandas, Matplotlib, P
 
 ### Sample commands
 
+The two parameters we are most concerned with are the training method and L2-penalty.  These can be changed using the `-t` and `--l2_reg` flags, respectively.  Below are some examples of command line arguments to use.
+
 - Train ResNet-18 using DRO with strong L2-penalty for 100 epochs
-  - `python dro_fairness_exp.py -m resnet18 -e 100 -t DRO -l2_reg 0.1 --model_save_file model_resnet18_DRO-1l2.pth --results_file results_resnet18_DRO-1l2.txt --accuracy_csv acc_resnet18_DRO-1l2.csv`
+  - `python dro_fairness_exp.py -m resnet18 -t DRO --l2_reg 0.1 --model_save_file model_resnet18_DRO-1l2.pth --results_file results_resnet18_DRO-1l2.txt --accuracy_csv acc_resnet18_DRO-1l2.csv`
 
 - Train ResNet-50 using ERM with standard regularization for 5 epochs
-  - `python dro_fairness_exp.py -m resnet50 --model_save_file model_resnet50_ERM-4l2.pth --results_file results_resnet50_ERM-4l2.txt --accuracy_csv acc_resnet50_ERM-4l2.csv`
+  - `python dro_fairness_exp.py -m resnet50 -e 5 --model_save_file model_resnet50_ERM-4l2.pth --results_file results_resnet50_ERM-4l2.txt --accuracy_csv acc_resnet50_ERM-4l2.csv`
 
-- For full list of command line arguments, see the `main()` function of `dro_fairness_exp.py` 
+For full list of command line arguments, see the `main()` function of `dro_fairness_exp.py` 
+
+### Generating Plots
+
+The data for accuracy during training is stored in a `.csv` file in the `/results/` directory.  To generate plots from this file, run the script `/helper_scripts/acc_plots` as follows:
+
+- `python acc_plots -f [FILE]`
+
+where `[FILE]` is just the file name alone (e.g. `acc_resnet50_ERM-4l2.csv`).
