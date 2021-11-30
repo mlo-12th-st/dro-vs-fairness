@@ -1,10 +1,11 @@
 '''
 Code gets Zip of celebA dataset, then unzips the data
 
-To get celebA dataset run: python3 get_data.py 1nNGRZOl9X4ryeCkEKMBbxNKeCHOp4ShU img_align_celeba.zip
+To get celebA dataset run: python3 get_data.py 1nNGRZOl9X4ryeCkEKMBbxNKeCHOp4ShU ../data/celeba/img_align_celeba.zip
 '''
 
 import sys
+import os
 import requests
 from zipfile import ZipFile
 
@@ -51,5 +52,6 @@ if __name__ == "__main__":
 
         with ZipFile(sys.argv[2], 'r') as zipObj:
             # Extract all the contents of zip file in current directory
-            zipObj.extractall()
+            zipObj.extractall('../data/celeba')
+        os.remove(sys.argv[2])
             
