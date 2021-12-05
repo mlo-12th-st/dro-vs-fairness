@@ -48,10 +48,19 @@ if __name__ == "__main__":
         file_id = sys.argv[1] #'1nNGRZOl9X4ryeCkEKMBbxNKeCHOp4ShU' 
         # DESTINATION FILE ON YOUR DISK
         destination = sys.argv[2] #'img_align_celeba.zip'
+
+        spot = sys.argv[2].split('/')[:-1]
+        s = '/'
+        spot = s.join(spot)
+
+        if not os.path.exists(spot):
+            os.makedirs(spot)
+        
         download_file_from_google_drive(file_id, destination)
+
 
         with ZipFile(sys.argv[2], 'r') as zipObj:
             # Extract all the contents of zip file in current directory
-            zipObj.extractall('../data/celeba')
+            zipObj.extractall(spot)
         os.remove(sys.argv[2])
             
