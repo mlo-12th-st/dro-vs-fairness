@@ -3,7 +3,7 @@
 
 ## Paper Overview
 Fair Attribute Classification through Latent Space De-biasing  
-Authors: Vikram V. Ramaswamy and Sunnie S. Y. Kim and Olga Russakovsky
+Authors: Vikram V. Ramaswamy and Sunnie S. Y. Kim and Olga Russakovsky  
 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)
 2021
 
