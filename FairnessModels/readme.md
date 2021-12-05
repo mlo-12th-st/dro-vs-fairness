@@ -1,5 +1,6 @@
 # Fairness with Latent Space Debiasing
 
+If viewing on the web interface, there are files missing from this repository. They will be downloaded with a script to fetch large files. You should see a "record" folder appear after running the script.
 
 ## Paper Overview
 Fair Attribute Classification through Latent Space De-biasing  
