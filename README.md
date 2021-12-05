@@ -1,7 +1,7 @@
 # DRO vs. Fairness
 Project for the Machine Learning and Optimization course at RPI exploring the trade-offs between distributionally robust optimization (DRO) and fairness in machine learning.
 
-Group Members: Jared Gridley (gridlj@rpi.edu), Will Hawkins (hawkiw2@rpi.edu), Cole Mediratta (medirc@rpi.edu), Roman Silen (silenr@rpi.edu), Dan Stevens (steved7@rpi.edu)
+Group Members: Roman Silen (silenr@rpi.edu), Jared Gridley (gridlj@rpi.edu), Dan Stevens (steved7@rpi.edu), Cole Mediratta (medirc@rpi.edu), Will Hawkins (hawkiw2@rpi.edu)
 
 
 ## Dataset
@@ -14,21 +14,19 @@ To use a subset of the dataset, download the first 5000 images from `img_align_c
 ### Prerequisites
 The following python packages are used in the code: NumPy, Pandas, Matplotlib, PyTorch, Torchvision, Pillow (PIL)
 
-### Running the Experiments
-
-#### Fairness GAN
+### Using the Fairness GAN
 See readme in FairnessModels folder.  
 run `bash run_fairness.sh` in a bash shell
 
+### Running the Experiments
 
-#### DRO
-The two parameters we are most concerned with are the training method and L2-penalty.  These can be changed using the `-t` and `--l2_reg` flags, respectively.  Below are some examples of command line arguments to use.
+The three parameters we are most concerned with are the optimization algorithm, dataset, and L2-penalty.  These can be changed using the `-t`, `--aug_data`, and `--l2_reg` flags, respectively.  Below are some examples of command line arguments to use.
 
 - Train ResNet-18 using DRO with strong L2-penalty for 100 epochs
   - `python dro_fairness_exp.py -m resnet18 -t DRO --l2_reg 0.1 --model_save_file model_resnet18_DRO-1l2.pth --results_file results_resnet18_DRO-1l2.txt --accuracy_csv acc_resnet18_DRO-1l2.csv`
 
-- Train ResNet-50 using ERM with standard regularization for 5 epochs
-  - `python dro_fairness_exp.py -m resnet50 -e 5 --model_save_file model_resnet50_ERM-4l2.pth --results_file results_resnet50_ERM-4l2.txt --accuracy_csv acc_resnet50_ERM-4l2.csv`
+- Train ResNet-50 using ERM with standard regularization for 5 epochs on the augmented dataset
+  - `python dro_fairness_exp.py -m resnet50 -e 5 --aug_data 1 --model_save_file model_resnet50_ERM-4l2.pth --results_file results_resnet50_ERM-4l2.txt --accuracy_csv acc_resnet50_ERM-4l2.csv`
 
 For full list of command line arguments, see the `main()` function of `dro_fairness_exp.py` 
 
