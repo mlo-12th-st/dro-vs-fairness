@@ -16,6 +16,12 @@ The following python packages are used in the code: NumPy, Pandas, Matplotlib, P
 
 ### Running the Experiments
 
+#### Fairness GAN
+See readme in FairnessModels folder. 
+run `bash run_fairness.sh` in a bash shell
+
+
+#### DRO
 The two parameters we are most concerned with are the training method and L2-penalty.  These can be changed using the `-t` and `--l2_reg` flags, respectively.  Below are some examples of command line arguments to use.
 
 - Train ResNet-18 using DRO with strong L2-penalty for 100 epochs
