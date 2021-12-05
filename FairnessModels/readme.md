@@ -28,7 +28,7 @@ This will do the following:
 5. Generate the Complimentary latent vectors z' and use them to generate images without the inherent biases from the dataset.
 6. Evaluate the classifier on the new dataset.
 
-
+Evaluation Metrics are printed out along the way and saved in pickle files in the record folder. There are some in the pulled folder. 
 
 ## Notes From Training
 ### Time Complexity
