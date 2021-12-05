@@ -9,6 +9,8 @@ import os
 import requests
 from zipfile import ZipFile
 
+
+
 def download_file_from_google_drive(id, destination):
     def get_confirm_token(response):
         for key, value in response.cookies.items():
@@ -41,13 +43,13 @@ def download_file_from_google_drive(id, destination):
 
 if __name__ == "__main__":
     
-    if(len(sys.argv) != 3):
+    if(len(sys.argv) <= 3):
         print('Invalid Arguments!')
     else:
         # TAKE ID FROM SHAREABLE LINK
-        file_id = sys.argv[1] #'1nNGRZOl9X4ryeCkEKMBbxNKeCHOp4ShU' 
+        file_id = sys.argv[1]  
         # DESTINATION FILE ON YOUR DISK
-        destination = sys.argv[2] #'img_align_celeba.zip'
+        destination = sys.argv[2] 
 
         spot = sys.argv[2].split('/')[:-1]
         s = '/'
@@ -58,9 +60,11 @@ if __name__ == "__main__":
         
         download_file_from_google_drive(file_id, destination)
 
+        if(len(sys.argv) == 3):
+            with ZipFile(sys.argv[2], 'r') as zipObj:
+                # Extract all the contents of zip file in current directory
+                zipObj.extractall(spot)
+            os.remove(sys.argv[2])
+        
 
-        with ZipFile(sys.argv[2], 'r') as zipObj:
-            # Extract all the contents of zip file in current directory
-            zipObj.extractall(spot)
-        os.remove(sys.argv[2])
             
