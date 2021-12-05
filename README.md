@@ -17,7 +17,7 @@ The following python packages are used in the code: NumPy, Pandas, Matplotlib, P
 ### Running the Experiments
 
 #### Fairness GAN
-See readme in FairnessModels folder. 
+See readme in FairnessModels folder.  
 run `bash run_fairness.sh` in a bash shell
 
 
