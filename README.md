@@ -1,6 +1,8 @@
 # DRO vs. Fairness
 Project for the Machine Learning and Optimization course at RPI exploring the trade-offs between distributionally robust optimization (DRO) and fairness in machine learning.
 
+Our presentation for this project can be found in `dro-vs-fairness-slides.pdf`.
+
 Group Members: Roman Silen (silenr@rpi.edu), Jared Gridley (gridlj@rpi.edu), Dan Stevens (steved7@rpi.edu), Cole Mediratta (medirc@rpi.edu), Will Hawkins (hawkiw2@rpi.edu)
 
 
